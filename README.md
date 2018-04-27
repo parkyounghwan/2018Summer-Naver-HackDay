@@ -11,13 +11,10 @@
 No Sql 저장소 활용
 
 ### 요구사항(선택)
+Reactive programming(rxjava, spring5, jdk9...) <br>
 대용량 EP 파일 다운로드 및 데이터 비교
-
-### 개발언어
-Java
-
-### 플랫폼 
-자유
 
 ### 기타 사항
 EP (Engine Page) 란? 상품 정보를 등록/업데이트 하기 위해 고유한 포맷으로 작성된 상품정보 파일
+
+EP 가이드 http://join.shopping.naver.com/misc/download/ep_guide.nhn
