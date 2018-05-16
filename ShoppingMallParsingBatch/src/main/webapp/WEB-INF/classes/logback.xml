@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%d{HH:mm} %-5level %logger{36} - %msg%n</Pattern>
+        </layout>
+    </appender>
+    
+    <timestamp key="bySecond" datePattern="yyyyMMdd'T'HHmmss"/>
+	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
+	  <file>/Users/parkyounghwan/sec/logs/log-${bySecond}.txt</file>
+	  <append>true</append>
+	  <!-- encoders are assigned the type
+	       ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+	  <encoder>
+	    <pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+	  </encoder>
+	</appender>
+ 
+  <!--  <logger name="example.logback.level.grandparents" level="TRACE" additivity="false"/> -->
+  	<logger name="com.shoppingmallparsing.batch" level="DEBUG"/>
+    <logger name="com.shoppingmallparsing.batch.job.shoppingItemWriter" level="INFO"/>
+    <root level="INFO">
+    	<appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE" />
+    </root>
+</configuration>
