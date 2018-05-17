@@ -1,0 +1,12 @@
+{
+	"mongoDB": {
+		"shoppingItem": {
+			"host": "localhost",
+			"port": 27017,
+			"db": "test",
+			"options":{
+				"poolSize": 5
+			}
+		}
+	}
+}
