@@ -31,7 +31,8 @@
 - 처음에는 프로젝트에서 몽고를 직접 쿼리 하려고 했지만, MongoDB는 Javascript를 이용해 쿼리 작업을 하였고, Spring Data에서 제공하는 MongoDB 라이브러리로는 javascript를 이용하는 장점을 살릴 수 없을 것 같았습니다. 그래서 편리하게 쿼리를 하고자 똑같은 javasciript인 node.js를 사용하기로 했습니다.
 
 ## 시스템 설계
-![shopping_feeder](./image/shopping_feeder.png)
+![shopping_feeder](./img_1.jpeg)
+![shopping_feeder](./img_2.png)
 
 ## 핵데이로 인한 성과
 - Spring Batch, Node.js, MongoDB 모두 처음 사용해보는 기술이었지만 비교적 짧은 시간에 주어진 요구사항에 맞게 동작하는 프로젝트를 만들었습니다.
