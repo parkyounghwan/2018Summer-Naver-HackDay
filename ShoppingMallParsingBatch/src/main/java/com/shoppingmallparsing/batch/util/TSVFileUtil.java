@@ -11,14 +11,14 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.shoppingmallparsing.batch.model.ShopItem;
+import com.shoppingmallparsing.batch.model.interpark.ShopItem;
 
 @Component("tsvFileUtil")
 public class TSVFileUtil {
 
-	private String TSV_FILE_DIRECTORY_PATH = "/Users/parkyounghwan/Documents/workspace-sts-3.8.4.RELEASE/ShoppingMallParsingBatch/csv/";
+	private String TSV_FILE_DIRECTORY_PATH = "/Users/parkyounghwan/git/shopping-feeder/ShoppingMallParsingBatch/csv/";
 
-	private SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmm");
+	private SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
 	private Date now = new Date();
 
 	private String filePath;
@@ -28,22 +28,24 @@ public class TSVFileUtil {
 		String year = formatter.format(this.now).substring(0, 4);
 		String month = formatter.format(this.now).substring(4, 6);
 
-		this.filePath = TSV_FILE_DIRECTORY_PATH + shopId + "/" + year + "/" + month + "/";
+		filePath = TSV_FILE_DIRECTORY_PATH + shopId + "/" + year + "/" + month + "/";
 
-		return this.filePath;
+		return filePath;
 	}
 
 	public String getFileName(){
-		String dayMinute = formatter.format(this.now).substring(6, 12);
-		this.fileName = dayMinute + ".txt";
+		String dayMinute = formatter.format(this.now).substring(6, 14);
+		fileName = dayMinute + ".txt";
 
-		return this.fileName;
+		return fileName;
 	}
 
 	public String previousFileSearch(String filePath){
 		File file = new File(filePath);
+
 		String[] fileArr = file.list();
-		if(fileArr.length == 0) {
+
+		if(fileArr.length <= 1) {
 			return null;
 		} else {
 			List<String> fileList = Arrays.asList(fileArr);
@@ -52,10 +54,13 @@ public class TSVFileUtil {
 		}
 	}
 
-	public void writeList(FileOutputStream fos, List<? extends ShopItem> shopItem) {
+	public void writeList(FileOutputStream fos, List<ShopItem> shopItem) {
 		StringBuilder writeString = new StringBuilder();
 
-		shopItem.forEach(item -> writeString.append(makeTSVRowString(item)));
+		for(ShopItem item: shopItem){
+			writeString.append(makeTSVRowString(item));
+		}
+
 		try {
 			fos.write(writeString.toString().getBytes("utf-8"));
 		} catch (IOException e) {
@@ -67,7 +72,7 @@ public class TSVFileUtil {
 	public String makeTSVRowString(ShopItem shopItem){
 		StringBuilder writeString = new StringBuilder();
 
-		writeString.append(shopItem.getItemId())
+		writeString.append(shopItem.getId())
 		.append("\t")
 		.append(shopItem.getTitle())
 		.append("\t")

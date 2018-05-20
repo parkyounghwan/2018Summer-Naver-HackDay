@@ -4,8 +4,8 @@ public class ShopInfo {
 
 	int id;
 	String url;
-	String shopId;		//shop_id;
-	String shopName;	//shop_name;
+	String shopId;
+	String shopName;
 
 	public int getId() {
 		return id;

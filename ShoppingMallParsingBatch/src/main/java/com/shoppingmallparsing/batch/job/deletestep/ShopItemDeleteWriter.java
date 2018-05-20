@@ -1,4 +1,4 @@
-package com.shoppingmallparsing.batch.job.step2;
+package com.shoppingmallparsing.batch.job.deletestep;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import com.shoppingmallparsing.batch.model.ShopItem;
+import com.shoppingmallparsing.batch.model.interpark.ShopItem;
 
 @Component("shopItemDeleteWriter")
 public class ShopItemDeleteWriter implements ItemWriter<ShopItem>{
@@ -36,14 +36,11 @@ public class ShopItemDeleteWriter implements ItemWriter<ShopItem>{
 
 	@Override
 	public void write(List<? extends ShopItem> delShopItems) throws Exception {
-//		for(ShopItem item: delShopItems){
-//			System.out.println("품절 넘어온 데이터 : " + item.getItemId() + " " + item.getShopId());
-//		}
 
 		if(delShopItems.size() != 0){
 			entity = new HttpEntity<List<? extends ShopItem>>(delShopItems, headers);
 			restTemplate.exchange(apiUrl, HttpMethod.DELETE, entity, String.class);
-//			System.out.println("품절 데이터: " + delShopItems.size());
+			System.out.println("품절 데이터: " + delShopItems.size());
 		}
 
 	}

@@ -1,10 +1,10 @@
-package com.shoppingmallparsing.batch.job.step1;
+package com.shoppingmallparsing.batch.job.insertstep;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.StepExecution;
@@ -23,12 +23,12 @@ import org.springframework.web.client.RestTemplate;
 
 import com.shoppingmallparsing.batch.job.execute.SuperStepExecution;
 import com.shoppingmallparsing.batch.logger.ItemLogger;
-import com.shoppingmallparsing.batch.model.ShopItem;
+import com.shoppingmallparsing.batch.model.interpark.ShopItem;
 import com.shoppingmallparsing.batch.util.TSVFileUtil;
 
 @Component("shoppingItemWriter")
 @StepScope
-public class ShoppingItemWriter extends SuperStepExecution<String> implements ItemWriter<ShopItem>{
+public class ShoppingItemWriter extends SuperStepExecution<String> implements ItemWriter<Map<String, ShopItem>>{
 
 	@Value("${log.file.path}")
 	private String LOG_PATH;
@@ -76,35 +76,37 @@ public class ShoppingItemWriter extends SuperStepExecution<String> implements It
 	}
 
 	@Override
-	public void write(List<? extends ShopItem> shopItem) throws Exception {
-//		System.out.println("writer count: " + count++ + shopItem.size());
+	public void write(List<? extends Map<String, ShopItem>> shopItem) throws Exception {
 
-		List<ShopItem> sameList, modifiedList, newList;
+		List<ShopItem> allList = new ArrayList<>();
+		List<ShopItem> newList = new ArrayList<>();
+		List<ShopItem> updateList = new ArrayList<>();
 
-		sameList = shopItem.parallelStream().filter(item -> !item.isModified() && !item.isDeleted() && !item.isUpdated()).collect(Collectors.toList());
-		modifiedList = shopItem.parallelStream().filter(item -> item.isModified()).collect(Collectors.toList());
-		newList = shopItem.parallelStream().filter(item -> item.isUpdated()).collect(Collectors.toList());
-
-		if(sameList.size() != 0){
-			itemLogger.write(ItemLogger.MODE_DUPLICATE, Arrays.toString(sameList.toArray()));
-//			System.out.println("기존 데이터: " + sameList.size());
+		for(Map<String, ShopItem> item: shopItem){
+			if(item.containsKey("new")) newList.add(item.get("new"));
+			if(item.containsKey("update")) updateList.add(item.get("update"));
+			if(item.containsKey("all")) allList.add(item.get("all"));
 		}
 
-		if(modifiedList.size() != 0){
-			insertEntity = new HttpEntity<List<? extends ShopItem>>(modifiedList, headers);
-			restTemplate.exchange(API_URL, HttpMethod.PUT, insertEntity, String.class);
-			itemLogger.write(ItemLogger.MODE_UPDATE, Arrays.toString(modifiedList.toArray()));
-//			System.out.println("수정 데이터: " + modifiedList.size());
-		}
+		if(newList.size() != 0) {
+			System.out.println("new count : " + newList.size());
 
-		if(newList.size() != 0){
 			insertEntity = new HttpEntity<List<? extends ShopItem>>(newList, headers);
-			restTemplate.exchange(API_URL, HttpMethod.POST, insertEntity, String.class);
-			itemLogger.write(ItemLogger.MODE_UPDATE, Arrays.toString(newList.toArray()));
-//			System.out.println("새로운 데이터: " + newList.size());
+			restTemplate.exchange(API_URL, HttpMethod.POST, insertEntity, Object.class);
 		}
 
-		tsvFileUtil.writeList(fos, shopItem);
-		super.putData("LATEST_FILENAME", tsvFileUtil.getFileName());
+		if(updateList.size() != 0) {
+			System.out.println("update count : " + updateList.size());
+
+			insertEntity = new HttpEntity<List<? extends ShopItem>>(updateList, headers);
+			restTemplate.exchange(API_URL, HttpMethod.PUT, insertEntity, Object.class);
+		}
+
+		if(allList.size() != 0){
+			System.out.println("all count : " + allList.size());
+			
+			tsvFileUtil.writeList(fos, allList);
+			super.putData("LATEST_FILENAME", tsvFileUtil.getFileName());
+		}
 	}
 }

@@ -1,5 +1,7 @@
 package com.shoppingmallparsing.batch.model;
 
+import com.shoppingmallparsing.batch.model.interpark.ShopItem;
+
 public class ShopApiResponse {
 	private boolean isSuccess;
 	private int errCode;
@@ -24,7 +26,6 @@ public class ShopApiResponse {
 		return result;
 	}
 	public void setResult(ShopItem result) {
-		System.out.println(result);
 		this.result = result;
 	}
 }

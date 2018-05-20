@@ -1,4 +1,4 @@
-package com.shoppingmallparsing.batch.job.step2;
+package com.shoppingmallparsing.batch.job.deletestep;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -6,7 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashSet;
-import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.springframework.batch.core.JobParameters;
@@ -18,13 +18,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.shoppingmallparsing.batch.job.execute.SuperStepExecution;
-import com.shoppingmallparsing.batch.model.ShopItem;
+import com.shoppingmallparsing.batch.model.interpark.ShopItem;
 import com.shoppingmallparsing.batch.parser.TSVShopItemParser;
 import com.shoppingmallparsing.batch.util.TSVFileUtil;
 
 @Component("shopItemDeleteProcessor")
 @StepScope
-public class ShopItemDeleteProcessor extends SuperStepExecution<String> implements ItemProcessor<List<ShopItem>, ShopItem>{
+public class ShopItemDeleteProcessor extends SuperStepExecution<String> implements ItemProcessor<ShopItem, ShopItem>{
 	private Set<String> latestItemIdSet = new HashSet<>();
 
 	private BufferedReader bufferedReader;
@@ -43,6 +43,9 @@ public class ShopItemDeleteProcessor extends SuperStepExecution<String> implemen
 		JobParameters context = stepExecution.getJobParameters();
 		this.shopId = context.getString("shopId");
 
+		super.setStepExecution(stepExecution);
+		Map<String, Integer> epHeader = (Map<String, Integer>) super.getData("EP_HEADER");
+
 		//step1 데이터 받기
 		super.setStepExecution(stepExecution);
 		String latestFileName = (String) super.getData("LATEST_FILENAME");
@@ -57,10 +60,9 @@ public class ShopItemDeleteProcessor extends SuperStepExecution<String> implemen
 		}
 
 		try {
-			while((line = this.bufferedReader.readLine()) != null ){
-				shopItem = tsvShopItemParser.parse(line);
-				shopItem.setShopId(shopId);
-				latestItemIdSet.add(shopItem.getItemId());
+			while((line = this.bufferedReader.readLine()) != null){
+				this.shopItem = tsvShopItemParser.interparkParse(line, epHeader);
+				this.latestItemIdSet.add(shopItem.getId());
 			}
 			this.bufferedReader.close();
 		} catch (IOException e) {
@@ -70,16 +72,12 @@ public class ShopItemDeleteProcessor extends SuperStepExecution<String> implemen
 	}
 
 	@Override
-	public ShopItem process(List<ShopItem> preItemList) throws Exception {
-		for(int i=0; i<preItemList.size(); i++){
-			String preItemId = preItemList.get(i).getItemId();
-			if(!latestItemIdSet.contains(preItemId)){
-				//삭제 할 데이터
-				return preItemList.get(i);
-			} else {
-				continue;
-			}
+	public ShopItem process(ShopItem preItem) throws Exception {
+		if(!latestItemIdSet.contains(preItem.getId())){
+			//품절
+			return preItem;
+		} else {
+			return null;
 		}
-		return null;
 	}
 }

@@ -18,7 +18,6 @@ public class ChunkCountListener implements ChunkListener{
 	@Override
 	public void beforeChunk(ChunkContext context) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -33,7 +32,6 @@ public class ChunkCountListener implements ChunkListener{
 	@Override
 	public void afterChunkError(ChunkContext context) {
 		// TODO Auto-generated method stub
-
 	}
 
 	public void setItemName(String itemName) {

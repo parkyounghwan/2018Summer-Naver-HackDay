@@ -1,7 +1,11 @@
 package com.shoppingmallparsing.batch.parser;
 
-import com.shoppingmallparsing.batch.model.ShopItem;
+import java.util.Map;
+
+import com.shoppingmallparsing.batch.model.interpark.ShopItem;
+import com.shoppingmallparsing.batch.model.lumid.LumidItem;
 
 public interface ShoppingItemParser {
-	public ShopItem parse(String item);
+	public ShopItem interparkParse(String item, Map<String, Integer> headerMap);
+	public LumidItem lumidParse(String item, Map<String, Integer> headerMap);
 }

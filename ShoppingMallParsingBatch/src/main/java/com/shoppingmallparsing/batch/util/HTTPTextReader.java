@@ -9,6 +9,7 @@ import java.nio.charset.Charset;
 
 public class HTTPTextReader implements AutoCloseable{
 	private BufferedReader bufferedReader;
+	private String header;
 
 	public HTTPTextReader(String url, String charSet){
 		this(url, charSet, true);
@@ -18,20 +19,17 @@ public class HTTPTextReader implements AutoCloseable{
 		InputStream inputStream = null;
 
 		try {
-			//해당 쇼핑몰에 대한 ep문서(http url 형식)가져오기
 			inputStream = new URL(url).openStream();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		//buffer에 읽어서 저장
 		this.bufferedReader = new BufferedReader(new InputStreamReader(inputStream, Charset.forName(charSet)));
 
-		//header 제외
 		if(skipHead){
 			try {
-				this.bufferedReader.readLine();
+				this.header = this.bufferedReader.readLine();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -39,7 +37,10 @@ public class HTTPTextReader implements AutoCloseable{
 		}
 	}
 
-	//한줄씩 읽어서 리턴
+	public String getHeader(){
+		return this.header;
+	}
+
 	public String nextLine(){
 		try {
 			return this.bufferedReader.readLine();
@@ -50,7 +51,6 @@ public class HTTPTextReader implements AutoCloseable{
 		}
 	}
 
-	//종료, try-with-exception 용, AutoCloseable 상속받아서 구현
 	@Override
 	public void close() throws Exception {
 		this.bufferedReader.close();

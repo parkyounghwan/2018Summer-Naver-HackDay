@@ -1,18 +1,9 @@
-package com.shoppingmallparsing.batch.model;
+package com.shoppingmallparsing.batch.model.interpark;
 
 public class ShopItem {
 
-	//쇼핑몰 ep 문서 정보
-	private String shopId;
-	private String shopName;
-
-	//신상, 변경, 삭제 정보
-	private boolean modified;
-	private boolean deleted;
-	private boolean updated;
-
 	//쇼핑몰 상품 정보
-	private String itemId;				//id
+	private String id;				//id
 	private String title;
 	private String pricePc;				//price_pc
 	private String priceMobile;			//price_mobile
@@ -47,23 +38,11 @@ public class ShopItem {
 	private String deliveryDetail;		//delivery_detail
 	private String sellerId;			//seller_id;
 
-	public String getShopId() {
-		return shopId;
+	public String getId() {
+		return id;
 	}
-	public void setShopId(String shopId) {
-		this.shopId = shopId;
-	}
-	public String getShopName() {
-		return shopName;
-	}
-	public void setShopName(String shopName) {
-		this.shopName = shopName;
-	}
-	public String getItemId() {
-		return itemId;
-	}
-	public void setItemId(String itemId) {
-		this.itemId = itemId;
+	public void setId(String id) {
+		this.id = id;
 	}
 	public String getTitle() {
 		return title;
@@ -263,45 +242,10 @@ public class ShopItem {
 	public void setSellerId(String sellerId) {
 		this.sellerId = sellerId;
 	}
-	public boolean isModified() {
-		return modified;
-	}
-	public void setModified(boolean modified) {
-		this.modified = modified;
-	}
-	public boolean isDeleted() {
-		return deleted;
-	}
-	public void setDeleted(boolean deleted) {
-		this.deleted = deleted;
-	}
-	public boolean isUpdated() {
-		return updated;
-	}
-	public void setUpdated(boolean updated) {
-		this.updated = updated;
-	}
-
-	@Override
-	public String toString() {
-		return "ShopItem [shopId=" + shopId + ", shopName=" + shopName + ", modified=" + modified + ", deleted="
-				+ deleted + ", updated=" + updated + ", itemId=" + itemId + ", title=" + title + ", pricePc=" + pricePc
-				+ ", priceMobile=" + priceMobile + ", normalPrice=" + normalPrice + ", link=" + link + ", mobileLink="
-				+ mobileLink + ", imageLink=" + imageLink + ", categoryName1=" + categoryName1 + ", categoryName2="
-				+ categoryName2 + ", categoryName3=" + categoryName3 + ", categoryName4=" + categoryName4
-				+ ", naverCategory=" + naverCategory + ", naverProductId=" + naverProductId + ", condition=" + condition
-				+ ", importFlag=" + importFlag + ", productFlag=" + productFlag + ", adult=" + adult + ", modelNumber="
-				+ modelNumber + ", brand=" + brand + ", maker=" + maker + ", origin=" + origin + ", cardEvent="
-				+ cardEvent + ", eventWords=" + eventWords + ", coupon=" + coupon + ", interestFreeEvent="
-				+ interestFreeEvent + ", point=" + point + ", installationCosts=" + installationCosts + ", searchTag="
-				+ searchTag + ", reviewCount=" + reviewCount + ", shipping=" + shipping + ", deliveryGrade="
-				+ deliveryGrade + ", deliveryDetail=" + deliveryDetail + ", sellerId=" + sellerId + "]";
-	}
 
 	@Override
 	public boolean equals(Object obj) {
 
-		//shopId, itemId 비교 안함
 		ShopItem shopItem = (ShopItem) obj;
 
 		boolean result = this.title.equals(shopItem.getTitle())
@@ -339,5 +283,20 @@ public class ShopItem {
 				&& this.sellerId.equals(shopItem.getSellerId());
 
 		return result;
+	}
+
+	@Override
+	public String toString() {
+		return "ShopItem [id=" + id + ", title=" + title + ", pricePc=" + pricePc + ", priceMobile="
+				+ priceMobile + ", normalPrice=" + normalPrice + ", link=" + link + ", mobileLink=" + mobileLink
+				+ ", imageLink=" + imageLink + ", categoryName1=" + categoryName1 + ", categoryName2=" + categoryName2
+				+ ", categoryName3=" + categoryName3 + ", categoryName4=" + categoryName4 + ", naverCategory="
+				+ naverCategory + ", naverProductId=" + naverProductId + ", condition=" + condition + ", importFlag="
+				+ importFlag + ", productFlag=" + productFlag + ", adult=" + adult + ", modelNumber=" + modelNumber
+				+ ", brand=" + brand + ", maker=" + maker + ", origin=" + origin + ", cardEvent=" + cardEvent
+				+ ", eventWords=" + eventWords + ", coupon=" + coupon + ", interestFreeEvent=" + interestFreeEvent
+				+ ", point=" + point + ", installationCosts=" + installationCosts + ", searchTag=" + searchTag
+				+ ", reviewCount=" + reviewCount + ", shipping=" + shipping + ", deliveryGrade=" + deliveryGrade
+				+ ", deliveryDetail=" + deliveryDetail + ", sellerId=" + sellerId + "]";
 	}
 }

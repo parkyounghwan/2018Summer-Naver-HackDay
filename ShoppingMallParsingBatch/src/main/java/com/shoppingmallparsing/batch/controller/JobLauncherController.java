@@ -58,7 +58,7 @@ public class JobLauncherController {
 					.toJobParameters();
 
 			jobExecution = jobLauncher.run(job, jobParameters);
-//			System.out.println("job 실행");
+
 		} catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException
 				| JobParametersInvalidException e) {
 			// TODO Auto-generated catch block
@@ -66,6 +66,5 @@ public class JobLauncherController {
 		}
 
 		return "complete";
-//		return "jobExecution's info: Id = " + jobExecution.getId() + " ,status = " + jobExecution.getExitStatus();
 	}
 }

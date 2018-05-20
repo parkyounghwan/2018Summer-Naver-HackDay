@@ -12,7 +12,7 @@ public class ShoppingItemBatchConfiguration {
 		ExecutionContextPromotionListener executionContextPromotionListener =
 				new ExecutionContextPromotionListener();
 
-		executionContextPromotionListener.setKeys(new String[]{"LATEST_FILENAME"});
+		executionContextPromotionListener.setKeys(new String[]{"LATEST_FILENAME", "EP_HEADER"});
 
 		return executionContextPromotionListener;
 	}
