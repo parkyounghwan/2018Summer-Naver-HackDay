@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="epFeedReader" class="com.naver.park.feed.job.readstep.EpFeedReader"/>
+	<bean id="epFeedWriter" class="com.naver.park.feed.job.readstep.EpFeedWriter"/>
+	<bean id="epFeedProcessor" class="com.naver.park.feed.job.readstep.EpFeedProcessor"/>
+	
+	<bean id="epDeleteReader" class="com.naver.park.feed.job.deletestep.EpDeleteReader"/>
+	<bean id="epDeleteWriter" class="com.naver.park.feed.job.deletestep.EpDeleteWriter"/>
+	<bean id="epDeleteProcessor" class="com.naver.park.feed.job.deletestep.EpDeleteProcessor"/>
+	
+	<bean id="feedLineMapper" class="com.naver.park.feed.mapper.FeedLineMapper" />
+	<bean id="tsvFileUtil" class="com.naver.park.feed.util.TSVFileUtil" />
+</beans>
