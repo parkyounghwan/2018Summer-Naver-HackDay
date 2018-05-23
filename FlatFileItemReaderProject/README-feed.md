@@ -23,4 +23,4 @@
 - 코드 최적화
 
 ## idea
-- JDK 7에서 추가된 Path, WatchService 클래스를 이용한 스케쥴링
+- JDK 7에 추가된 Path, WatchService 클래스를 이용한 스케쥴링
