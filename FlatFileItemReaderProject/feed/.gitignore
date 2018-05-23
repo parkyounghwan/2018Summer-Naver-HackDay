@@ -1,0 +1,10 @@
+##sts
+.project
+.classpath
+.settings/
+.springBeans
+.target
+
+##mac
+.DS_Store
+.DS_Store?
