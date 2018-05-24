@@ -21,6 +21,3 @@
 - batch 에서 commit-interval 단위로 비교하기 위한 delete-step 수정 필요
 - 신상, 수정, 품절 log
 - 코드 최적화
-
-## idea
-- JDK 7에 추가된 Path, WatchService 클래스를 이용한 스케쥴링
