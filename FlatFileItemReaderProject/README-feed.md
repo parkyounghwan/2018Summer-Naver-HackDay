@@ -18,6 +18,6 @@
 ## issue
 - EpFeedReader에서 발생하는 fileReader 에러
 - 품절 처리 시, 파일을 읽고 쓰는데 발생하는 비용
-- batch 에서 commit-interval 단위로 비교하기 위한 delete-step 수정 필요
+- ~~batch 에서 commit-interval 단위로 비교하기 위한 delete-step 수정 필요~~
 - 신상, 수정, 품절 log
 - 코드 최적화
