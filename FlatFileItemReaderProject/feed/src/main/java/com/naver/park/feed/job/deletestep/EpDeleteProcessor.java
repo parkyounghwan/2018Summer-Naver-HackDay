@@ -65,9 +65,11 @@ public class EpDeleteProcessor implements ItemProcessor<Product, Product>, StepE
 				try {
 					latestItemId.add(fileReader.read().getId());
 				} catch (Exception e) {
+					e.printStackTrace();
 					break;
 				}
 			}
+			System.out.format("현재 파일 item count: %d \n", latestItemId.size());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -77,8 +79,10 @@ public class EpDeleteProcessor implements ItemProcessor<Product, Product>, StepE
 
 	@Override
 	public Product process(Product item) throws Exception {
-		if(!latestItemId.contains(item.getId())){
-			//품절
+		if(item == null) {
+			return null;
+		}
+		if(latestItemId.contains(item.getId())) {
 			return item;
 		} else {
 			return null;

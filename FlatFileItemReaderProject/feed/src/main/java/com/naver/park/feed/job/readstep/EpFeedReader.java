@@ -135,7 +135,7 @@ public class EpFeedReader implements ItemReader<Product>, StepExecutionListener 
 
 	          	  writer.write(line + System.lineSeparator());
 	          	  //System.out.println(line);
-	          	  if (row > 1000) {
+	          	  if (row > 2000) {
 	          		  row--;
 	          		  break;
 	          	  }

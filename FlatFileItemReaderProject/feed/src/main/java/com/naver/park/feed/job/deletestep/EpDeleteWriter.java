@@ -3,6 +3,7 @@ package com.naver.park.feed.job.deletestep;
 import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.StepExecution;
@@ -22,7 +23,7 @@ public class EpDeleteWriter implements ItemWriter<Product>, StepExecutionListene
 
 	private RestTemplate restTemplate = new RestTemplate();
 	private HttpHeaders httpHeaders = new HttpHeaders();
-	private HttpEntity<List<? extends Product>> httpEntity;
+	private HttpEntity<List<? extends String>> httpEntity;
 
 	@Override
 	public void beforeStep(StepExecution stepExecution) {
@@ -36,13 +37,14 @@ public class EpDeleteWriter implements ItemWriter<Product>, StepExecutionListene
 		apiUrl = prop.getProperty("mongo.api.url");
 	}
 
-
 	@Override
 	public void write(List<? extends Product> items) throws Exception {
+		List<String> itemList = items.parallelStream().map(Product::getId).collect(Collectors.toList());
+
 		if(items.size() != 0){
-			httpEntity = new HttpEntity<List<? extends Product>>(items, httpHeaders);
-			restTemplate.exchange(apiUrl, HttpMethod.DELETE, httpEntity, String.class);
-			System.out.println("품절 데이터: " + items.size());
+			httpEntity = new HttpEntity<List<? extends String>>(itemList, httpHeaders);
+			restTemplate.exchange(apiUrl, HttpMethod.DELETE, httpEntity, Object.class);
+			System.out.format("품절 데이터: %d \n", items.size());
 		}
 	}
 

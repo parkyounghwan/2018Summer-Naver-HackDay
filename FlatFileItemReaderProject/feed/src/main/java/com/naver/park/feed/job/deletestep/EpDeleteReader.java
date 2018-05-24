@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
@@ -33,6 +35,10 @@ public class EpDeleteReader implements ItemReader<Product>, StepExecutionListene
 
 	@Autowired
 	private TSVFileUtil tsvFileUtil;
+
+	private static final int PAGE_COUNT = 1000;
+
+	private List<Product> itemList = new ArrayList<>();
 
 	@Override
 	public void beforeStep(StepExecution stepExecution) {

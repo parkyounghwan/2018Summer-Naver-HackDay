@@ -37,6 +37,10 @@ public class EpFeedWriter implements StepExecutionListener, ItemWriter<Map<Strin
 	@Autowired
 	private TSVFileUtil tsvFileUtil;
 
+	int count;
+
+	private String epFileName;
+
 	@Override
 	public void beforeStep(StepExecution stepExecution) {
 		Properties prop = new Properties();
@@ -54,6 +58,7 @@ public class EpFeedWriter implements StepExecutionListener, ItemWriter<Map<Strin
 
 	@Override
 	public void write(List<? extends Map<String, Product>> items) throws Exception {
+		System.out.format("readstep count: %d \n", ++count);
 
 		List<Product> newList = new ArrayList<>();
 		List<Product> updateList = new ArrayList<>();
@@ -76,17 +81,17 @@ public class EpFeedWriter implements StepExecutionListener, ItemWriter<Map<Strin
 		allList.remove(null);
 
 		if(updateList.size() != 0) {
-			System.out.println("updateList : " + updateList.size());
+			System.out.format("updateList : %d \n", updateList.size());
 			httpEntity = new HttpEntity<List<? extends Product>>(updateList, httpHeaders);
 			restTemplate.exchange(apiUrl,  HttpMethod.PUT, httpEntity, Object.class);
 		}
 
 		if(allList.size() != 0) {
-			System.out.println("allList : " + allList.size());
+			System.out.format("allList : %d \n", allList.size());
 		}
 
 		if(newList.size() != 0) {
-			System.out.println("newList : " + newList.size());
+			System.out.format("newList : %d \n", newList.size());
 			httpEntity = new HttpEntity<List<? extends Product>>(newList, httpHeaders);
 			restTemplate.exchange(apiUrl,  HttpMethod.POST, httpEntity, Object.class);
 		}
@@ -97,14 +102,20 @@ public class EpFeedWriter implements StepExecutionListener, ItemWriter<Map<Strin
 
 	private void preEpFile(List<Product> allList) {
 
-		StringBuilder preEpDir = new StringBuilder(tsvFileUtil.getFilePath());
-		preEpDir.append(tsvFileUtil.getFileName());
+		String preEpDir = tsvFileUtil.getFilePath();
+		String preEpFile = epFileName;
 
-		File epFile = new File(preEpDir.toString());
+		if(preEpFile == null) {
+			preEpFile = tsvFileUtil.getFileName();
+		}
+
+		String preFilepath = preEpDir + preEpFile;
+
+		File epFile = new File(preFilepath);
 		tsvFileUtil.createDirectoryIfNeed(epFile);
 
 		try {
-			FileOutputStream fos = new FileOutputStream(preEpDir.toString());
+			FileOutputStream fos = new FileOutputStream(preFilepath, true);
 			tsvFileUtil.writeList(fos, allList);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
