@@ -82,7 +82,7 @@ public class EpDeleteProcessor implements ItemProcessor<Product, Product>, StepE
 		if(item == null) {
 			return null;
 		}
-		if(latestItemId.contains(item.getId())) {
+		if(!latestItemId.contains(item.getId())) {
 			return item;
 		} else {
 			return null;
