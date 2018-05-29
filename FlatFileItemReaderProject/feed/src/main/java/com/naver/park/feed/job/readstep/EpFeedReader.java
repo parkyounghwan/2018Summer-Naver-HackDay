@@ -46,7 +46,7 @@ public class EpFeedReader implements ItemReader<Product>, StepExecutionListener 
 	@Override
 	public void beforeStep(StepExecution stepExecution) {
 
-		epDownload("https://leocomfile.blob.core.windows.net/navershopping/navershopping.tsv");
+		epDownload("~");
 		System.out.println();
 		System.out.println("header" + header);
 
@@ -95,7 +95,6 @@ public class EpFeedReader implements ItemReader<Product>, StepExecutionListener 
 		CloseableHttpClient httpClient = createHttpClient();
 
 		try {
-	        //HttpGet httpGet = new HttpGet("https://www.rovectin.co.kr:443/shop/price/naver.php");
 	       HttpGet httpGet = new HttpGet(epUrl);
 
 	        httpGet.setConfig(RequestConfig.custom()
