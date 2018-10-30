@@ -1,9 +1,9 @@
 ##sts
 .project
 .classpath
-.settings/
+settings/
 .springBeans
-.target
+target/
 
 ##mac
 .DS_Store
